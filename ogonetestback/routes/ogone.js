@@ -5,6 +5,6 @@ const app = express();
 const { OgoneController } = require("../app/controllers/ogone-controller");
 
 app.get("/test", OgoneController.test);
-app.get("/hosted", OgoneController.hosted);
+app.post("/hosted", OgoneController.hosted);
 
 module.exports = app;
