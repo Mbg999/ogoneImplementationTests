@@ -42,6 +42,7 @@ class OgoneController {
       hostedCheckoutSpecificInput: {
         variant: "100",
         locale: "es_ES",
+        returnUrl: 'http://localhost:4200/hosted/done',
       },
     };
 
