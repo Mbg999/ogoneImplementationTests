@@ -29,6 +29,7 @@
     <h4>Payment flow methods</h4>
     <!-- SUBMIT BTNS -->
     <div class="submit-btns">
+      <!-- HOSTED RPP METHOD -->
       <div>
         <button type="submit" (click)="submittable() && hostedPay()">
           Pay with hosted payment page (RPP) method
@@ -42,7 +43,36 @@
           >.
         </p>
       </div>
+      <!-- /HOSTED RPP METHOD -->
+      <!-- CLIENT SDK METHOD -->
+      <div>
+        <button type="submit" (click)="submittable() && getPaymentProductMethods()">
+          Pay with client sdk session method
+        </button>
+        <p>
+          Frontend SDK needed.
+          <a
+            target="_blank"
+            href="https://epayments.developer-ingenico.com/documentation/sdk/server/nodejs/#paymentwithclientsdk"
+            >More info here</a
+          >.
+        </p>
+      </div>
+      <!-- /CLIENT SDK METHOD -->
     </div>
     <!-- /SUBMIT BTNS -->
   </fieldset>
 </form>
+<div *ngIf="basicPaymentProducts?.length > 0" class="wrapper__payment-product">
+  <hr>
+  <h3>Basic Payment Products</h3>
+  <div *ngFor="let product of basicPaymentProducts" class="payment-product">
+    <div class="wrapper__logo">
+      <img [src]="product.displayHints.logo">
+    </div>
+    <h5>{{ product.displayHints.label }}</h5>
+    <div class="wrapper_btn--pay">
+      <button type="button" (click)="clientSDKPay(product)">Pay</button>
+    </div>
+  </div>
+</div>
