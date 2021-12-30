@@ -1,0 +1,8 @@
+hay 3 flujos para efectuar el pago (https://epayments.developer-ingenico.com/documentation/sdk/server/nodejs/#paymentwithclientsdk)
+
+1.- ingenico hostea tu pagina de pagos, te la da ya hecha y se puede modificar rapidamente con una interfaz gráfica. Se requiere de sdk solo en backend. Posiblemente cobren más por este servicio (tengo que investigarlo aun).
+
+2.- tu creas la pagina de pagos, la puedes personalizar al 100%, te ahorras que la hostee ingenico, 
+esta página la puedes hostear de forma centralizada, o que cada aplicación tenga su propia implementación. Requiere de sdk en back y front. El front pide una sesion de ePayment al back, con la cual puede crear el PaymentRequest del usuario, con toda la información sobre el pago (producto de pago, numero de tarjeta, cantidad a pagar, etc) y lo envia encriptado al back, junto con la información extra que la logica de negocio de tu aplicación requiera, y el back procesa la transacción final con un CreatePaymentRequest, el cual hace uso del PaymentRequest encriptado. (https://epayments-api.developer-ingenico.com/s2sapi/v1/en_US/nodejs/payments/create.html?paymentPlatform=ALL#payments-create-payload)
+
+3.- igual que la 2º pero el front no se implica en las llamadas a ingenico, recae mas carga sobre el back, ya que tiene que recuperar los PaymentProducts, validaciones, etc, cuando el front se lo pida. Lo que se pierde en rendimiento se puede ganar en seguridad, ya que no hay codigo de la pasarela hackeable desde el front. Se requiere de sdk solo en backend.
