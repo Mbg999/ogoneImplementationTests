@@ -92,6 +92,36 @@ class OgoneController {
       }
     );
   }
+
+  session(req, res) {
+    var body = {};
+    connectSdk.sessions.create(
+      "1014", // merchantId // https://sandbox.account.ingenico.com/account/merchantid
+      body,
+      null,
+      function (error, sdkResponse) {
+        // if sdkResponse is not null, it has the following properties:
+        // - status: the HTTP status code
+        // - body: the response body
+        // - isSuccess: true if the call was successful,
+        //              or false if the Ingenico ePayments platform returned an error response
+
+        if (error) {
+          return res.status(500).json({
+            error,
+          });
+        }
+
+        if (sdkResponse.isSuccess) {
+          return res.status(200).json(sdkResponse.body);
+        }
+
+        return res.status(500).json({
+          error: "create session error",
+        });
+      }
+    );
+  }
 }
 
 module.exports.OgoneController = new OgoneController();
