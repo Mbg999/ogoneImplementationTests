@@ -8,12 +8,14 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class PaymentDoneComponent implements OnInit {
   hostedCheckoutId: string;
+  paymentId: string;
 
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(
-      (params) => (this.hostedCheckoutId = params.hostedCheckoutId)
-    );
+    this.route.queryParams.subscribe((params) => {
+      this.hostedCheckoutId = params.hostedCheckoutId;
+      this.paymentId = params.paymentId;
+    });
   }
 }

@@ -1,3 +1,4 @@
+import { CreatePaymentClientSDKRequest } from './../../interfaces/requests/create-payment-client-sdk-request';
 import { CreateSessionResponse } from './../../interfaces/responses/create-session-response';
 import { HostedPaymentResponse } from './../../interfaces/responses/hosted-payment-response';
 import { Injectable } from '@angular/core';
@@ -28,5 +29,9 @@ export class OgoneService {
 
   createSession(): Observable<CreateSessionResponse> {
     return this.http.get<CreateSessionResponse>(this.URL+'sessions');
+  }
+
+  createPaymentClientSDK(request: CreatePaymentClientSDKRequest): Observable<any> {
+    return this.http.post(this.URL+'payments/clientsdk', request);
   }
 }

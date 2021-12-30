@@ -1,4 +1,5 @@
 <p>payment-done works!</p>
 <hr>
-<h2>payment hostedCheckoutId: {{ hostedCheckoutId || 'bUT WHERE IS THE HOSTEDCHEKOUTID?!' }}</h2>
+<h2 *ngIf="hostedCheckoutId">payment hostedCheckoutId: {{ hostedCheckoutId }}</h2>
+<h2 *ngIf="paymentId">payment Id: {{ paymentId }}</h2>
 <a href="" routerLink="/">purchase another item</a>

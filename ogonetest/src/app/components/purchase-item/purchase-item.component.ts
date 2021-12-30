@@ -13,6 +13,7 @@ import { OgoneService } from './../../services/ogone/ogone.service';
 // INTERFACES
 import { ConnectSdk } from './../../interfaces/connectsdk';
 import { BasicPaymentItem } from 'src/app/interfaces/basic-payment-item';
+import { Router } from '@angular/router';
 
 const connectsdk: ConnectSdk = window['connectsdk'];
 
@@ -28,7 +29,11 @@ export class PurchaseItemComponent implements OnInit {
   basicPaymentProducts: BasicPaymentProduct[];
   session: any;
 
-  constructor(private fb: FormBuilder, private _ogoneService: OgoneService) {}
+  constructor(
+    private fb: FormBuilder,
+    private _ogoneService: OgoneService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.createForm();
@@ -108,11 +113,23 @@ export class PurchaseItemComponent implements OnInit {
       (encryptedString) => {
         // The promise has fulfilled. The encryptedString contains the ciphertext
         // that should be sent to the Worldline platform via the Server API
-        alert(`paid done, hash -> ${encryptedString}`);
-        this.basicPaymentItems = undefined;
-        this.basicPaymentProducts = undefined;
-        this.session = undefined;
-        this.form.reset();
+        // ENVIAR AL BACK PARA QUE CREE EL CreatePaymentRequest Y PROCESE LA TRANSACCION
+        // https://epayments-api.developer-ingenico.com/s2sapi/v1/en_US/nodejs/payments/create.html?paymentPlatform=ALL#payments-create-request-example
+        this._ogoneService
+          .createPaymentClientSDK({
+            shoppingCart: this.form.value,
+            encryptedCustomerInput: encryptedString,
+            returnUrl: 'http://localhost:4200/paymentDone',
+            paymentProductId: paymentProduct.id,
+            tokenize: paymentRequest.getTokenize(),
+          })
+          .subscribe((resp) => {
+            this.router.navigate(['/paymentDone'], {
+              queryParams: {
+                paymentId: resp.payment.id
+              }
+            });
+          });
       },
       (errors) => {
         // The promise failed, inform the user what happened.
